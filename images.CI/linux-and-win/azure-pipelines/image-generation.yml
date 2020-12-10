@@ -9,7 +9,7 @@ jobs:
   displayName: Image Generation (${{ parameters.image_type }})
   timeoutInMinutes: 600
   cancelTimeoutInMinutes: 30
-  pool: ci-agent-pool
+  pool: ci-packeragent-pool
   variables:
   - group: Image Generation Variables
 
@@ -75,6 +75,7 @@ jobs:
 
   - task: PowerShell@2
     displayName: 'Create release for VM deployment'
+    condition: and(ne(variables['RELEASE_TARGET_ORGANIZATION'], ''), ne(variables['RELEASE_TARGET_DEFINITION_ID'], ''), ne(variables['RELEASE_TARGET_PROJECT'], ''), ne(variables['RELEASE_TARGET_TOKEN'], ''))
     inputs:
       targetType: filePath
       filePath: ./images.CI/linux-and-win/create-release.ps1
